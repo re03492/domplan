@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ДомПлан — жильё и ремонт</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <a class="brand" href="#housing">
+            <span class="logo">Д</span>
+            ДомПлан
+        </a>
+
+        <span class="header-note">
+            От выбора жилья — до новоселья
+        </span>
+    </header>
+
+    <div class="layout">
+        <aside>
+            <p class="eyebrow">ВАШ НОВЫЙ ДОМ</p>
+
+            <nav aria-label="Разделы сайта">
+                <a href="#housing">
+                    01 <span>Выбор жилья</span>
+                </a>
+
+                <a href="#companies">
+                    02 <span>Компании и ремонт</span>
+                </a>
+
+                <a href="#materials">
+                    03 <span>Материалы</span>
+                </a>
+
+                <a href="#expenses">
+                    04 <span>Бюджет и расходы</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main>
+            <div id="notice" role="status" aria-live="polite"></div>
+
+            <section id="housing" class="page">
+                <div class="hero">
+                    <p class="eyebrow">ВЫБОР ЖИЛЬЯ</p>
+
+                    <h1>
+                        Сначала — место,<br>
+                        которое станет домом.
+                    </h1>
+
+                    <p>
+                        Сравните варианты и выберите дом которую хотите.
+                    </p>
+
+                    <div class="house-art" aria-hidden="true">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <div class="section-head">
+                    <h2>Предложения жилья</h2>
+                </div>
+
+                <div class="filters">
+                    <label>
+                        Поиск
+                        <input
+                            id="search"
+                            type="search"
+                            placeholder="Название или район"
+                        >
+                    </label>
+
+                    <label>
+                        Комнаты
+                        <select id="rooms">
+                            <option value="">Все варианты</option>
+                            <option value="1">1 комната</option>
+                            <option value="2">2 комнаты</option>
+                            <option value="3">3 комнаты</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Сортировка
+                        <select id="sort">
+                            <option value="price">Сначала дешевле</option>
+                            <option value="area">Сначала просторнее</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div id="homes" class="cards"></div>
+                <div id="comparison" class="panel" hidden></div>
+            </section>
+
+            <section id="companies" class="page" hidden>
+                <p class="eyebrow">КОМПАНИИ И РЕМОНТ</p>
+
+                <h1>Найдите свою команду.</h1>
+
+                <p class="muted">
+                    Выберите компанию для ремонта вашего дома.
+                </p>
+
+                <div id="company-list" class="cards"></div>
+
+                <div class="two-col">
+                    <form id="request-form" class="panel">
+                        <h2>Заявка на ремонт</h2>
+
+                        <label>
+                            Компания
+                            <select name="company" id="request-company">
+                                <option>Любая компания</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Описание работ
+                            <textarea
+                                name="description"
+                                required
+                                maxlength="1000"
+                                placeholder="Например, покрасить стены в спальне"
+                            ></textarea>
+                        </label>
+
+                        <label>
+                            Планируемый бюджет, ₸
+                            <input
+                                name="amount"
+                                type="number"
+                                min="1"
+                                max="1000000000"
+                                step="1"
+                                required
+                            >
+                        </label>
+
+                        <button>Сохранить заявку</button>
+
+                        <p class="muted small">
+                            Это локальный черновик. Передача компаниям
+                            появится после подключения сервера.
+                        </p>
+                    </form>
+
+                    <div class="panel">
+                        <h2>Мои заявки</h2>
+                        <div id="requests"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="materials" class="page" hidden>
+                <p class="eyebrow">МАТЕРИАЛЫ ДЛЯ РЕМОНТА</p>
+                <h1>Сравните цены перед покупкой.</h1>
+                <p class="muted">Выберите материал и количество. Итог включает целые упаковки и доставку.</p>
+
+                <div class="filters">
+                    <label>Материал
+                        <select id="material">
+                            <option value="laminate">Ламинат «Дуб», 8 мм, 32 класс — м²</option>
+                            <option value="paint">Краска белая матовая, для стен — л</option>
+                            <option value="tile">Плитка серая, 30 × 30 см — м²</option>
+                        </select>
+                    </label>
+                    <label><span id="quantity-label">Нужная площадь, м²</span>
+                        <input id="quantity" type="number" min="0.01" max="100000" step="0.01" value="30" required>
+                    </label>
+                </div>
+                <p id="material-summary" class="muted" aria-live="polite"></p>
+                <div id="offers" class="cards"></div>
+
+                <div class="panel">
+                    <h2>Добавить предложение магазина</h2>
+                    <p class="muted">Указывайте цены на тот же товар с одинаковыми характеристиками.</p>
+                    <form id="offer-form" class="offer-form">
+                        <label>Материал
+                            <select name="material" id="offer-material">
+                                <option value="laminate">Ламинат «Дуб», 8 мм, 32 класс</option>
+                                <option value="paint">Краска белая матовая, для стен</option>
+                                <option value="tile">Плитка серая, 30 × 30 см</option>
+                            </select>
+                        </label>
+                        <label>Магазин<input name="store" maxlength="80" required></label>
+                        <label><span id="pack-label">В упаковке, м²</span>
+                            <input name="pack" type="number" min="0.01" max="100000" step="0.01" required>
+                        </label>
+                        <label>Цена упаковки, ₸<input name="price" type="number" min="0.01" max="1000000000" step="0.01" required></label>
+                        <label>Доставка всего заказа, ₸<input name="delivery" type="number" min="0" max="1000000000" step="0.01" value="0" required></label>
+                        <label>Ссылка на товар<input name="url" type="url" maxlength="2000" placeholder="https://..."></label>
+                        <button type="submit">Добавить предложение</button>
+                    </form>
+                    <p id="offer-message" class="muted" role="status"></p>
+                </div>
+            </section>
+
+            <section id="expenses" class="page" hidden>
+                <h1>Бюджет и расходы</h1>
+            </section>
+
+            <footer>ДомПлан · Жильё и ремонт</footer>
+        </main>
+    </div>
+</body>
+</html>
